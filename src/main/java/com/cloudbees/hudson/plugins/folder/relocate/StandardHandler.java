@@ -82,7 +82,7 @@ import org.kohsuke.stapler.HttpResponses;
         if (permitted(item, instance) && (instance.getItem(item.getName()) == null) || instance.getItem(item.getName()) == item) {
             result.add(instance);
         }
-        ITEM: for (Item g : instance.getAllItems()) {
+        ITEM: for (Item g : instance.getAllItems(Folder.class)) {
             if (g instanceof DirectlyModifiableTopLevelItemGroup) {
                 DirectlyModifiableTopLevelItemGroup itemGroup = (DirectlyModifiableTopLevelItemGroup) g;
                 if (!permitted(item, itemGroup)) {
