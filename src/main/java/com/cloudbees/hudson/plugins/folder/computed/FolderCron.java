@@ -114,27 +114,35 @@ public class FolderCron extends PeriodicWork {
      * @param cal the date to check for.
      */
     public void checkTriggers(final Calendar cal) {
-        for (ComputedFolder<?> p : Jenkins.getInstance().allItems(ComputedFolder.class)) {
-            for (Trigger<?> t : p.getTriggers().values()) {
-                LOGGER.log(Level.FINE, "cron checking {0}", p.getName());
-                CronTabList tabs;
-                try {
-                    tabs = (CronTabList) this.tabsField.get(t);
-                } catch (IllegalAccessException e) {
-                    continue;
-                }
-                if (tabs.check(cal)) {
-                    LOGGER.log(Level.CONFIG, "cron triggered {0}", p.getName());
-                    try {
-                        t.run();
-                    } catch (Throwable e) {
-                        // t.run() is a plugin, and some of them throw RuntimeException and other things.
-                        // don't let that cancel the polling activity. report and move on.
-                        LOGGER.log(Level.WARNING, t.getClass().getName() + ".run() failed for " + p.getName(), e);
-                    }
-                }
-            }
+        if (Jenkins.getInstance() == null) {
+            return;
         }
+        /**
+         * FTNT:
+         * ComputedFolder.class is com.github.mjdetullio.jenkins.plugins.multibranch.MatrixMultiBranchProject
+         * no need to theck Trigger
+         */
+//        for (ComputedFolder<?> p : Jenkins.getInstance().allItems(ComputedFolder.class)) {
+//            for (Trigger<?> t : p.getTriggers().values()) {
+//                LOGGER.log(Level.FINE, "cron checking {0}", p.getName());
+//                CronTabList tabs;
+//                try {
+//                    tabs = (CronTabList) this.tabsField.get(t);
+//                } catch (IllegalAccessException e) {
+//                    continue;
+//                }
+//                if (tabs.check(cal)) {
+//                    LOGGER.log(Level.CONFIG, "cron triggered {0}", p.getName());
+//                    try {
+//                        t.run();
+//                    } catch (Throwable e) {
+//                        // t.run() is a plugin, and some of them throw RuntimeException and other things.
+//                        // don't let that cancel the polling activity. report and move on.
+//                        LOGGER.log(Level.WARNING, t.getClass().getName() + ".run() failed for " + p.getName(), e);
+//                    }
+//                }
+//            }
+//        }
     }
 
 }

@@ -85,7 +85,8 @@ import org.kohsuke.stapler.HttpResponses;
             // we can move to the root if there is none with the same name.
             return true;
         }
-        ITEM: for (Item g : Items.allItems(ACL.SYSTEM, instance, Item.class)) {
+//        ITEM: for (Item g : Items.allItems(ACL.SYSTEM, instance, Item.class)) {
+        ITEM: for (Item g : Items.allItems(ACL.SYSTEM, instance, Folder.class)) {
             if (g instanceof DirectlyModifiableTopLevelItemGroup) {
                 DirectlyModifiableTopLevelItemGroup itemGroup = (DirectlyModifiableTopLevelItemGroup) g;
                 if (!permitted(item, itemGroup) || /* unlikely since we just checked CREATE, but just in case: */ !g.hasPermission(Item.READ)) {
@@ -135,7 +136,7 @@ import org.kohsuke.stapler.HttpResponses;
         if (permitted(item, instance) && (instance.getItem(item.getName()) == null) || instance.getItem(item.getName()) == item) {
             result.add(instance);
         }
-        ITEM: for (Item g : instance.getAllItems()) {
+        ITEM: for (Item g : instance.getAllItems(Folder.class)) {
             if (g instanceof DirectlyModifiableTopLevelItemGroup) {
                 DirectlyModifiableTopLevelItemGroup itemGroup = (DirectlyModifiableTopLevelItemGroup) g;
                 if (!permitted(item, itemGroup)) {
